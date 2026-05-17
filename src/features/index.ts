@@ -1,0 +1,7 @@
+export { LoginPage, SignUpPage } from './auth'
+export { HomePage } from './home'
+export { ExplorePage } from './explore'
+export { CreatePostPage } from './create-post'
+export { SavedPostsPage } from './saved'
+export { NotificationsPage } from './notifications'
+export { ProfilePage } from './profile'

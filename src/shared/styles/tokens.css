@@ -1,0 +1,27 @@
+/* Design tokens from bookshare_desktop_design_system/DESIGN.md */
+:root {
+  --color-primary-container: #2c1810;
+  --color-secondary: #7c572d;
+  --color-secondary-container: #fecb97;
+  --color-background: #f9f9f9;
+  --color-surface: #ffffff;
+  --color-on-surface: #1a1c1c;
+  --color-dark-text: #1c1c1c;
+  --color-medium-gray: #757575;
+  --color-light-border: #e0e0e0;
+  --color-heart-red: #ff6b6b;
+  --color-star-gold: #ffd700;
+  --color-bookmark-blue: #42a5f5;
+  --color-error-red: #e53935;
+  --color-success-green: #4caf50;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --radius-default: 0.5rem;
+  --radius-lg: 1rem;
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-quote: 'Newsreader', Georgia, serif;
+}
