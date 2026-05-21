@@ -17,7 +17,7 @@ export function ReadingChallengeWidget() {
       </div>
       <ProgressBar
         value={progressPercent}
-        className="relative z-10 mb-6 !bg-white/20"
+        className="relative z-10 mb-6 bg-white/20!"
         barClassName="!bg-[#fecb97]"
       />
       <div className="relative z-10 grid grid-cols-2 gap-4">
