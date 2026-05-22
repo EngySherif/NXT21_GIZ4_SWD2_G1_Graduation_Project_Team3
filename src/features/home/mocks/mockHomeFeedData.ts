@@ -165,6 +165,20 @@ export const readingChallenge = {
   pagesRead: 4281,
 }
 
+export type FeedPostItem =
+  | { type: 'reading'; data: ReadingPostData }
+  | { type: 'quote'; data: QuotePostData }
+  | { type: 'review'; data: ReviewPostData }
+  | { type: 'thought'; data: ThoughtPostData }
+
+/** Ordered feed for HomePage — map in FeedPostList */
+export const feedPosts: FeedPostItem[] = [
+  { type: 'reading', data: readingPost },
+  { type: 'quote', data: quotePost },
+  { type: 'review', data: reviewPost },
+  { type: 'thought', data: thoughtPost },
+]
+
 /** Format large numbers for display (e.g. 1200 → "1.2k") */
 export function formatCount(count: number): string {
   if (count >= 1000) {

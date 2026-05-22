@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/shared/config/routes'
 import { currentUser } from '@/features/home/mocks/mockHomeFeedData'
+import { useAuthStore } from '@/stores/authStore'
 import { cn } from '@/shared/lib/utils'
 import { Avatar } from '@/shared/components/ui/Avatar'
 import { Card } from '@/shared/components/ui/Card'
@@ -14,9 +15,12 @@ const quickActions = [
 ] as const
 
 export function QuickShareComposer() {
+  const { user } = useAuthStore()
+  const avatarSrc = user?.avatarUrl ?? currentUser.avatarUrl
+
   return (
     <Card className="flex items-center gap-4">
-      <Avatar src={currentUser.avatarUrl} alt="Your avatar" />
+      <Avatar src={avatarSrc} alt={user?.fullName ?? 'Your avatar'} />
       <Link
         to={ROUTES.create}
         className={cn(

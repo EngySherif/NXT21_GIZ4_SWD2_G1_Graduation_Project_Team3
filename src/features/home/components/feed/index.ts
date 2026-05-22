@@ -1,3 +1,4 @@
+export { FeedPostList } from '../FeedPostList'
 export { QuickShareComposer } from './QuickShareComposer'
 export { FeedFooterLinks } from './FeedFooterLinks'
 export { FeedSidebar } from './FeedSidebar'
