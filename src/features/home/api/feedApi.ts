@@ -21,7 +21,7 @@ type DbBook = {
   cover_url: string | null
 }
 
-type DbPostRow = {
+export type DbPostRow = {
   id: string
   type: 'quote' | 'review' | 'reading' | 'thought'
   payload: Record<string, unknown>
@@ -39,7 +39,7 @@ function first<T>(value: T | T[] | null): T | null {
   return Array.isArray(value) ? value[0] ?? null : value
 }
 
-function mapRow(row: DbPostRow): FeedPostItem | null {
+export function mapRow(row: DbPostRow): FeedPostItem | null {
   const profile = first(row.profiles)
   if (!profile) return null
 
@@ -104,7 +104,7 @@ function mapRow(row: DbPostRow): FeedPostItem | null {
   }
 }
 
-export async function fetchFeedPosts(): Promise<FeedPostItem[]> {
+export async function fetchFeedPosts(userId?: string): Promise<FeedPostItem[]> {
   if (!isSupabaseConfigured() || !supabase) return []
 
   const { data, error } = await supabase
@@ -116,7 +116,7 @@ export async function fetchFeedPosts(): Promise<FeedPostItem[]> {
       payload,
       likes_count,
       comments_count,
-      profiles ( id, full_name, username, avatar_url ),
+      profiles!posts_user_id_fkey ( id, full_name, username, avatar_url ),
       books ( title, author, cover_url )
     `,
     )
@@ -125,7 +125,26 @@ export async function fetchFeedPosts(): Promise<FeedPostItem[]> {
 
   if (error) throw new Error(error.message)
 
+  let savedPostIds = new Set<string>()
+
+  if (userId) {
+    const { data: savesData, error: savesError } = await supabase
+      .from('saves')
+      .select('post_id')
+      .eq('user_id', userId)
+
+    if (!savesError && savesData) {
+      savedPostIds = new Set(savesData.map((s) => s.post_id))
+    }
+  }
+
   return (data as DbPostRow[])
-    .map(mapRow)
+    .map((row) => {
+      const item = mapRow(row)
+      if (item) {
+        item.data.isSaved = savedPostIds.has(item.data.id)
+      }
+      return item
+    })
     .filter((item): item is FeedPostItem => item !== null)
 }

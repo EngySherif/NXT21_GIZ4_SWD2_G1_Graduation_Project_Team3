@@ -11,31 +11,28 @@ type Props = {
   data: any;
   setData: React.Dispatch<React.SetStateAction<any>>;
   onSubmit: () => void;
+  selectedBook: Book | null;
+  setSelectedBook: React.Dispatch<React.SetStateAction<Book | null>>;
 };
 
 export function CreateQuotePostForm({
   data,
   setData,
   onSubmit,
+  selectedBook,
+  setSelectedBook,
 }: Props) {
   const [bookSearch, setBookSearch] = useState("");
 
-  const selectedBook: Book = {
-    title: "The Secret History",
-    author: "Donna Tartt",
-    image:
-      "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1451445852i/33413128.jpg",
-  };
-
   return (
     <div className="xl:col-span-2 bg-white rounded-2xl border border-[#eadfda] p-6 shadow-sm">
-
       <BookSearch
         bookSearch={bookSearch}
         setBookSearch={setBookSearch}
+        onSelectBook={setSelectedBook}
       />
 
-      <SelectedBook selectedBook={selectedBook} />
+      {selectedBook && <SelectedBook selectedBook={selectedBook} />}
 
       <QuoteInput
         quote={data.quote}

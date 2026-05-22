@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/stores/authStore";
+import { createPost } from "../api/createPostApi";
+import { ROUTES } from "@/shared/config/routes";
 
 import type { PostType } from "@/shared/types/post";
 
@@ -20,7 +24,10 @@ export interface Book {
 
 
 export function CreatePostPage() {
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<PostType>("quote");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [postData, setPostData] = useState({
     quote: "",
@@ -37,16 +44,29 @@ export function CreatePostPage() {
     thoughtBody: "",
   });
 
-  const selectedBook: Book = {
-    title: "The Secret History",
-    author: "Donna Tartt",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuD68bqapiuRQlWbYjnw1flKrD0xXXOSbB29QuzVRHXPZM7fj1zMTfIQVd8aMJFr1bxjRwxKCzwz7OKtpbzdAA4NQEraLYk5MPiD6fSI75J-BFfMo-ANSD_bHQsFeSgxJCA0crBI1s6PEg2FV-e1FQADQQi9sUJ6Vot-C7HduwrVby7SBaRFsPZ6DbqQHLGvnb5stZizZeksMZXqCK95IeI-ktqE7pS1BaJFl1wdYHSTZdFE0CkdcM7fAXou1Agk_78eRCzM0qQDpQs",
-  };
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
-  const handlePost = () => {
-    console.log("POST DATA:", postData);
-    alert("Post created!");
+  const handlePost = async () => {
+    if (!user) {
+      alert("You must be logged in to post.");
+      return;
+    }
+    
+    if (activeTab !== "thought" && !selectedBook) {
+      alert("Please select a book first.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await createPost(activeTab, postData, selectedBook, user.id);
+      navigate(ROUTES.home);
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert(error instanceof Error ? error.message : "Failed to create post");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,13 +77,15 @@ export function CreatePostPage() {
 
       <TwoColumnLayout
         main={
-          <>
+          <div className={isSubmitting ? "opacity-50 pointer-events-none transition-opacity" : ""}>
             {
             activeTab === "quote" && (
               <CreateQuotePostForm
                 data={postData}
                 setData={setPostData}
                 onSubmit={handlePost}
+                selectedBook={selectedBook}
+                setSelectedBook={setSelectedBook}
               />
             )}
 
@@ -72,6 +94,8 @@ export function CreatePostPage() {
                 data={postData}
                 setData={setPostData}
                 onSubmit={handlePost}
+                selectedBook={selectedBook}
+                setSelectedBook={setSelectedBook}
               />
             )}
 
@@ -80,6 +104,8 @@ export function CreatePostPage() {
                 data={postData}
                 setData={setPostData}
                 onSubmit={handlePost}
+                selectedBook={selectedBook}
+                setSelectedBook={setSelectedBook}
               />
             )}
 
@@ -90,7 +116,7 @@ export function CreatePostPage() {
                 onSubmit={handlePost}
               />
             )}
-          </>
+          </div>
         }
         aside={
           <LivePreview

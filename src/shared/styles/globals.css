@@ -37,11 +37,74 @@ body {
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  transition: font-variation-settings 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
 }
 
 .material-symbols-outlined.filled {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* Bookmark Animations */
+@keyframes bookmark-pop-in {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bookmark-pop-out {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bookmark-in {
+  animation: bookmark-pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-bookmark-out {
+  animation: bookmark-pop-out 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Card Dismiss/Exit Animations on Saved Page */
+@keyframes card-fade-out-collapse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    max-height: 800px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+    max-height: 0;
+    margin-bottom: -24px; /* Offset the flex container gap-6 (24px) */
+    padding-top: 0;
+    padding-bottom: 0;
+    filter: blur(4px);
+    pointer-events: none;
+  }
+}
+
+.animate-card-fade-out {
+  animation: card-fade-out-collapse 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  overflow: hidden;
+}
+
 
 /* Hide FAB while mobile menu is open */
 body.mobile-menu-open .mobile-fab {

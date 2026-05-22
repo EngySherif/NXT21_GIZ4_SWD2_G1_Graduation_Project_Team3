@@ -6,10 +6,11 @@ import { FeedPostArticle } from './FeedPostArticle'
 
 type ReadingPostCardProps = {
   post: ReadingPostData
+  onSaveToggle?: (isSaved: boolean) => void
 }
 
 /** Feed card: user reading progress on a book */
-export function ReadingPostCard({ post }: ReadingPostCardProps) {
+export function ReadingPostCard({ post, onSaveToggle }: ReadingPostCardProps) {
   return (
     <FeedPostArticle>
       <FeedPostHeader user={post.user} timeAgo={post.user.timeAgo} />
@@ -21,7 +22,16 @@ export function ReadingPostCard({ post }: ReadingPostCardProps) {
         currentPage={post.currentPage}
         totalPages={post.totalPages}
       />
-      <FeedPostActionBar likes={post.likes} comments={post.comments} showBookmark />
+      <div className="border-t border-stone-100 pt-4">
+        <FeedPostActionBar
+          postId={post.id}
+          likes={post.likes}
+          comments={post.comments}
+          showBookmark
+          initialIsSaved={post.isSaved}
+          onSaveToggle={onSaveToggle}
+        />
+      </div>
     </FeedPostArticle>
   )
 }

@@ -14,14 +14,14 @@ export function StarRating({ rating }: StarRatingProps) {
       {stars.map((star) => {
         if (rating >= star) {
           return (
-            <span key={star} className="material-symbols-outlined filled text-[16px]">
+            <span key={star} className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
               star
             </span>
           )
         }
         if (rating >= star - 0.5) {
           return (
-            <span key={star} className="material-symbols-outlined text-[16px]">
+            <span key={star} className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
               star_half
             </span>
           )
