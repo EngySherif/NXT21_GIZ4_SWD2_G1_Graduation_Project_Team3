@@ -8,7 +8,7 @@ export function PublicRoute() {
   if (!isHydrated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f9f9f9] text-sm text-stone-500">
-        Loading…
+        Loading...
       </div>
     )
   }

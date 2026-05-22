@@ -47,6 +47,21 @@ async function fetchProfile(userId: string): Promise<AuthUser | null> {
   }
 }
 
+function fetchProfileWithTimeout(userId: string): Promise<AuthUser | null> {
+  return Promise.race([
+    fetchProfile(userId),
+    new Promise<null>((resolve) => {
+      window.setTimeout(() => resolve(null), 5000)
+    }),
+  ])
+}
+
+function authRequestTimeout(): Promise<null> {
+  return new Promise((resolve) => {
+    window.setTimeout(() => resolve(null), 5000)
+  })
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const useSupabase = isSupabaseConfigured()
   const [user, setUser] = useState<AuthUser | null>(() =>
@@ -61,13 +76,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let cancelled = false
 
     async function hydrate() {
-      if (!supabase) return
-      const { data } = await supabase.auth.getSession()
-      if (!cancelled && data.session?.user) {
-        const profile = await fetchProfile(data.session.user.id)
-        setUser(profile)
+      try {
+        if (!supabase) return
+        const sessionResult = await Promise.race([supabase.auth.getSession(), authRequestTimeout()])
+        if (!sessionResult) return
+
+        if (!cancelled && sessionResult.data.session?.user) {
+          const profile = await fetchProfileWithTimeout(sessionResult.data.session.user.id)
+          setUser(profile)
+        }
+      } finally {
+        if (!cancelled) setIsHydrated(true)
       }
-      if (!cancelled) setIsHydrated(true)
     }
 
     void hydrate()
@@ -75,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (cancelled) return
       if (session?.user) {
-        const profile = await fetchProfile(session.user.id)
+        const profile = await fetchProfileWithTimeout(session.user.id)
         setUser(profile)
       } else {
         setUser(null)
@@ -101,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           })
           if (error) throw error
 
-          const profile = await fetchProfile(data.user.id)
+          const profile = await fetchProfileWithTimeout(data.user.id)
           if (!profile) {
             throw new Error(
               'Profile not found. Run supabase/schema.sql in your Supabase SQL Editor.',
@@ -155,7 +175,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             )
           }
 
-          const profile = await fetchProfile(data.user.id)
+          const profile = await fetchProfileWithTimeout(data.user.id)
           setUser(profile)
           return
         }
