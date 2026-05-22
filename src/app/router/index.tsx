@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AppRouteLayout } from '@/app/layouts/AppRouteLayout'
+import { PageTitle } from '@/app/router/PageTitle'
 import { ProtectedRoute } from '@/app/router/ProtectedRoute'
 import { PublicRoute } from '@/app/router/PublicRoute'
 import {
@@ -16,7 +17,12 @@ import { ROUTES } from '@/shared/config/routes'
 
 const router = createBrowserRouter([
   {
-    element: <ProtectedRoute />,
+    element: (
+      <>
+        <PageTitle />
+        <ProtectedRoute />
+      </>
+    ),
     children: [
       {
         element: <AppRouteLayout />,
@@ -32,7 +38,12 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <PublicRoute />,
+    element: (
+      <>
+        <PageTitle />
+        <PublicRoute />
+      </>
+    ),
     children: [
       { path: ROUTES.login, element: <LoginPage /> },
       { path: ROUTES.signup, element: <SignUpPage /> },
