@@ -55,7 +55,7 @@ export const readChallenges = [
     icon: "material-symbols-outlined text-warm-gold text-3xl",
     iconName: "auto_stories",
     pepjoined: "12k",
-    year: 2024,
+    year: 2026,
     title: "Classic Marathon",
     description: `Read 12 classic novels by the end of the year.`,
     booksRead:4,
