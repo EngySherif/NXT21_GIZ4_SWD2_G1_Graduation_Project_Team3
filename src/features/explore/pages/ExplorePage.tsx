@@ -70,7 +70,7 @@ export function ExplorePage() {
                     icon={card.icon}
                     iconName={card.iconName}
                     pepJoined={card.pepjoined}
-                    year={card.year}
+                    year={card.year ?? 2026}
                     title={card.title}
                     description={card.description}
                     booksRead={card.booksRead}
