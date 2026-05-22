@@ -1,5 +1,12 @@
 -- Run once in Supabase → SQL Editor
 
+drop table if exists public.saves cascade;
+drop table if exists public.likes cascade;
+drop table if exists public.posts cascade;
+drop table if exists public.books cascade;
+drop table if exists public.profiles cascade;
+drop type if exists public.post_type cascade;
+
 create type public.post_type as enum ('quote', 'review', 'reading', 'thought');
 
 create table public.profiles (
