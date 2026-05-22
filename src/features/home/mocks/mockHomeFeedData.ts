@@ -29,6 +29,7 @@ export type ReadingPostData = {
   totalPages: number
   likes: number
   comments: number
+  isSaved?: boolean
 }
 
 export type QuotePostData = {
@@ -38,6 +39,7 @@ export type QuotePostData = {
   attribution: string
   likes: number
   shares: number
+  isSaved?: boolean
 }
 
 export type ReviewPostData = {
@@ -48,6 +50,7 @@ export type ReviewPostData = {
   body: string
   likes: number
   comments: number
+  isSaved?: boolean
 }
 
 export type ThoughtPostData = {
@@ -56,6 +59,7 @@ export type ThoughtPostData = {
   body: string
   likes: number
   comments: number
+  isSaved?: boolean
 }
 
 /** Current user shown in the top bar and "share thought" box */

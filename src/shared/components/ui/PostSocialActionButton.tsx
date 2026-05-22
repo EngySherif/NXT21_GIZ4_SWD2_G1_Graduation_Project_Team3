@@ -6,6 +6,7 @@ type PostSocialActionButtonProps = {
   icon: string
   count?: number | string
   hoverColor?: 'heart' | 'brand' | 'bookmark'
+  filled?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 const hoverClasses = {
@@ -19,6 +20,7 @@ export function PostSocialActionButton({
   icon,
   count,
   hoverColor = 'brand',
+  filled = false,
   className,
   type = 'button',
   ...props
@@ -33,7 +35,7 @@ export function PostSocialActionButton({
       )}
       {...props}
     >
-      <Icon name={icon} size="md" />
+      <Icon name={icon} size="md" filled={filled} />
       {count !== undefined ? <span className="text-xs">{count}</span> : null}
     </button>
   )
